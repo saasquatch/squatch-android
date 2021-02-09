@@ -20,7 +20,7 @@ public final class SquatchJavascriptInterface {
 
   public static final String JAVASCRIPT_INTERFACE_NAME = "SquatchAndroid";
 
-  final Context mContext;
+  private final Context mContext;
 
   private SquatchJavascriptInterface(Context mContext) {
     this.mContext = mContext;
