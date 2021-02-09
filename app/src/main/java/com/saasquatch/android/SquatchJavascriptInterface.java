@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -64,14 +65,14 @@ public final class SquatchJavascriptInterface {
    *
    * @see SquatchJavascriptInterface#JAVASCRIPT_INTERFACE_NAME
    */
-  public static SquatchJavascriptInterface create(Context mContext) {
+  public static SquatchJavascriptInterface create(@NonNull Context mContext) {
     return new SquatchJavascriptInterface(Objects.requireNonNull(mContext));
   }
 
   /**
    * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
    */
-  public static void applyToWebView(WebView webView) {
+  public static void applyToWebView(@NonNull  WebView webView) {
     webView
         .addJavascriptInterface(create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
   }
