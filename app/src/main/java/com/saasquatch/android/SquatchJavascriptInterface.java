@@ -7,18 +7,21 @@ import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Objects;
 
-public class SquatchJavascriptInterface {
+/**
+ * Javascript interface with utility methods for SaaSquatch widgets.
+ *
+ * @see WebView#addJavascriptInterface(Object, String)
+ */
+public final class SquatchJavascriptInterface {
 
   public static final String JAVASCRIPT_INTERFACE_NAME = "SquatchAndroid";
 
   final Context mContext;
 
-  /**
-   * Instantiate the interface and set the context
-   */
   private SquatchJavascriptInterface(Context mContext) {
     this.mContext = mContext;
   }
@@ -28,31 +31,25 @@ public class SquatchJavascriptInterface {
    */
   @JavascriptInterface
   public void shareOnFacebook(String shareUrl, String fallbackUrl) {
-    final Intent intent = new Intent(Intent.ACTION_SEND);
-    intent.setType("text/plain");
-    intent.putExtra(Intent.EXTRA_TEXT, shareUrl);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+    final Intent fbIntent = new Intent(Intent.ACTION_SEND)
+        .setType("text/plain")
+        .putExtra(Intent.EXTRA_TEXT, shareUrl)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     // See if official Facebook app is found
     // From https://stackoverflow.com/questions/7545254/android-and-facebook-share-intent
-    boolean facebookAppFound = false;
-    List<ResolveInfo> matches = mContext.getPackageManager().queryIntentActivities(intent, 0);
-    for (ResolveInfo info : matches) {
-      if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-        intent.setPackage(info.activityInfo.packageName);
-        facebookAppFound = true;
-        break;
+    final List<ResolveInfo> resolveInfoList = mContext.getPackageManager()
+        .queryIntentActivities(fbIntent, 0);
+    for (ResolveInfo resolveInfo : resolveInfoList) {
+      if (resolveInfo.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
+        fbIntent.setPackage(resolveInfo.activityInfo.packageName);
+        mContext.startActivity(fbIntent);
+        return;
       }
     }
-
     // As fallback to a browser
-    if (facebookAppFound) {
-      mContext.startActivity(intent);
-    } else {
-      final Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fallbackUrl));
-      fallbackIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      mContext.startActivity(fallbackIntent);
-    }
+    final Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fallbackUrl))
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    mContext.startActivity(fallbackIntent);
   }
 
   /**
@@ -63,13 +60,21 @@ public class SquatchJavascriptInterface {
     Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
   }
 
-  public static SquatchJavascriptInterface create(Context mContext) {
+  /**
+   * Default factory method for {@link SquatchJavascriptInterface}.
+   *
+   * @see SquatchJavascriptInterface#JAVASCRIPT_INTERFACE_NAME
+   */
+  public static SquatchJavascriptInterface create(@NonNull Context mContext) {
     return new SquatchJavascriptInterface(Objects.requireNonNull(mContext));
   }
 
-  public static void applyToActivity(WebView myActivity) {
-    myActivity
-        .addJavascriptInterface(create(myActivity.getContext()), JAVASCRIPT_INTERFACE_NAME);
+  /**
+   * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
+   */
+  public static void applyToWebView(@NonNull  WebView webView) {
+    webView
+        .addJavascriptInterface(create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
   }
 
 }
