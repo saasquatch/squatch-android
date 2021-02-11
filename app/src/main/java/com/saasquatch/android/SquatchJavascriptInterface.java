@@ -30,7 +30,9 @@ public final class SquatchJavascriptInterface {
    * Share on Facebook with browser fallback
    */
   @JavascriptInterface
-  public void shareOnFacebook(String shareUrl, String fallbackUrl) {
+  public void shareOnFacebook(@NonNull String shareUrl, @NonNull String fallbackUrl) {
+    Objects.requireNonNull(shareUrl);
+    Objects.requireNonNull(fallbackUrl);
     final Intent fbIntent = new Intent(Intent.ACTION_SEND)
         .setType("text/plain")
         .putExtra(Intent.EXTRA_TEXT, shareUrl)
@@ -56,7 +58,8 @@ public final class SquatchJavascriptInterface {
    * Show a toast from the web page
    */
   @JavascriptInterface
-  public void showToast(String toast) {
+  public void showToast(@NonNull String toast) {
+    Objects.requireNonNull(toast);
     Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
   }
 
@@ -73,8 +76,8 @@ public final class SquatchJavascriptInterface {
    * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
    */
   public static void applyToWebView(@NonNull WebView webView) {
-    webView
-        .addJavascriptInterface(create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
+    webView.addJavascriptInterface(
+        create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
   }
 
 }
