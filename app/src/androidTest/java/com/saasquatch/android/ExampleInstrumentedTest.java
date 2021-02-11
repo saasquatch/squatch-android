@@ -22,4 +22,5 @@ public class ExampleInstrumentedTest {
     Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     assertEquals("com.saasquatch.android", appContext.getPackageName());
   }
+
 }

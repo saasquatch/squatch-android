@@ -72,7 +72,7 @@ public final class SquatchJavascriptInterface {
   /**
    * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
    */
-  public static void applyToWebView(@NonNull  WebView webView) {
+  public static void applyToWebView(@NonNull WebView webView) {
     webView
         .addJavascriptInterface(create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
   }
