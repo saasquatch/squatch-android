@@ -1,5 +1,6 @@
 package com.saasquatch.android;
 
+import androidx.annotation.NonNull;
 import com.saasquatch.sdk.ClientOptions;
 import com.saasquatch.sdk.SaaSquatchClient;
 import java.io.Closeable;
@@ -13,7 +14,7 @@ public final class SquatchAndroid implements Closeable {
 
   private final SaaSquatchClient saasquatchClient;
 
-  private SquatchAndroid(SaaSquatchClient saasquatchClient) {
+  private SquatchAndroid(@NonNull SaaSquatchClient saasquatchClient) {
     this.saasquatchClient = saasquatchClient;
   }
 
@@ -22,15 +23,16 @@ public final class SquatchAndroid implements Closeable {
     saasquatchClient.close();
   }
 
+  @NonNull
   public SaaSquatchClient getSaaSquatchClient() {
     return saasquatchClient;
   }
 
-  public static SquatchAndroid create(ClientOptions clientOptions) {
+  public static SquatchAndroid create(@NonNull ClientOptions clientOptions) {
     return new SquatchAndroid(SaaSquatchClient.create(clientOptions));
   }
 
-  public static SquatchAndroid createForTenant(String tenantAlias) {
+  public static SquatchAndroid createForTenant(@NonNull String tenantAlias) {
     return new SquatchAndroid(SaaSquatchClient.createForTenant(tenantAlias));
   }
 
