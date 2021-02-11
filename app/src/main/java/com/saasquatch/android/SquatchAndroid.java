@@ -54,6 +54,7 @@ public final class SquatchAndroid implements Closeable {
           final WebSettings webSettings = webView.getSettings();
           webSettings.setJavaScriptEnabled(true);
           webSettings.setDomStorageEnabled(true);
+          SquatchJavascriptInterface.applyToWebView(webView);
           final WidgetUpsertResult widgetUpsertResult =
               apiResponse.toModel(WidgetUpsertResult.class);
         });
