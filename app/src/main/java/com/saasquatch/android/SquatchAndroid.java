@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.saasquatch.sdk.RequestOptions;
 import com.saasquatch.sdk.SaaSquatchClient;
 import com.saasquatch.sdk.input.WidgetType;
+import com.saasquatch.sdk.input.WidgetUpsertInput;
 import com.saasquatch.sdk.models.WidgetUpsertResult;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
@@ -46,11 +47,9 @@ public final class SquatchAndroid implements Closeable {
   }
 
   @SuppressLint("SetJavaScriptEnabled")
-  public void widgetUpsert(@NonNull Map<String, Object> userInput,
-      @Nullable WidgetType widgetType, @Nullable RequestOptions requestOptions,
-      @NonNull WebView webView) {
+  public void widgetUpsert(@NonNull WidgetUpsertInput widgetUpsertInput, @Nullable RequestOptions requestOptions, @NonNull WebView webView) {
     Objects.requireNonNull(webView);
-    Flowable.fromPublisher(saasquatchClient.widgetUpsert(userInput, widgetType, requestOptions))
+    Flowable.fromPublisher(saasquatchClient.widgetUpsert(widgetUpsertInput, requestOptions))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnNext(apiResponse -> {
