@@ -32,6 +32,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    implementation 'com.github.saasquatch:saasquatch-java-sdk:9a073f9'
+    api 'com.github.saasquatch:saasquatch-java-sdk:9a073f9'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 }
