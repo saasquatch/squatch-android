@@ -64,15 +64,6 @@ public final class SquatchJavascriptInterface {
   }
 
   /**
-   * Show a toast from the web page
-   */
-  @JavascriptInterface
-  public void showToast2(@NonNull String toast) {
-    Objects.requireNonNull(toast);
-    Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-  }
-
-  /**
    * Default factory method for {@link SquatchJavascriptInterface}.
    *
    * @see SquatchJavascriptInterface#JAVASCRIPT_INTERFACE_NAME
