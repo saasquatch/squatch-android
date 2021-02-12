@@ -9,14 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.saasquatch.sdk.RequestOptions;
 import com.saasquatch.sdk.SaaSquatchClient;
-import com.saasquatch.sdk.input.WidgetType;
 import com.saasquatch.sdk.input.WidgetUpsertInput;
 import com.saasquatch.sdk.models.WidgetUpsertResult;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.Closeable;
-import java.util.Map;
 import java.util.Objects;
 import org.apache.commons.codec.binary.Base64;
 
