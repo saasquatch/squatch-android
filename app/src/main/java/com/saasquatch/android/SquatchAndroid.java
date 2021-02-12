@@ -3,6 +3,7 @@ package com.saasquatch.android;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import android.annotation.SuppressLint;
+import android.util.Base64;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import androidx.annotation.NonNull;
@@ -15,8 +16,8 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.Closeable;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Wrapper for {@link SaaSquatchClient} that contains Android specific features.
@@ -58,7 +59,8 @@ public final class SquatchAndroid implements Closeable {
           final WidgetUpsertResult widgetUpsertResult =
               apiResponse.toModel(WidgetUpsertResult.class);
           final String template = widgetUpsertResult.getTemplate();
-          final String templateBase64 = Base64.encodeBase64String(template.getBytes(UTF_8));
+          final String templateBase64 = Base64.encodeToString(
+              template.getBytes(UTF_8), Base64.DEFAULT);
           webView.loadData(templateBase64, "text/html", "base64");
         });
   }
