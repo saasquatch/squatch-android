@@ -67,10 +67,9 @@ public final class SquatchJavascriptInterface {
    * Show a toast from the web page
    */
   @JavascriptInterface
-  public void showToast2(@NonNull String toast, @NonNull  String toast2) {
+  public void showToast2(@NonNull String toast) {
     Objects.requireNonNull(toast);
-    Objects.requireNonNull(toast2);
-    Toast.makeText(mContext, toast + " " + toast2, Toast.LENGTH_SHORT).show();
+    Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
   }
 
   /**
