@@ -30,12 +30,12 @@ public final class SquatchJavascriptInterface {
    * Share on Facebook with browser fallback
    */
   @JavascriptInterface
-  public void shareOnFacebook(@NonNull String shareUrl, @NonNull String fallbackUrl) {
-    Objects.requireNonNull(shareUrl);
-    Objects.requireNonNull(fallbackUrl);
+  public void shareOnFacebook(@NonNull String shareLink, @NonNull String messageLink) {
+    Objects.requireNonNull(shareLink);
+    Objects.requireNonNull(messageLink);
     final Intent fbIntent = new Intent(Intent.ACTION_SEND)
         .setType("text/plain")
-        .putExtra(Intent.EXTRA_TEXT, shareUrl)
+        .putExtra(Intent.EXTRA_TEXT, shareLink)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     // See if official Facebook app is found
     // From https://stackoverflow.com/questions/7545254/android-and-facebook-share-intent
@@ -49,7 +49,7 @@ public final class SquatchJavascriptInterface {
       }
     }
     // As fallback to a browser
-    final Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(fallbackUrl))
+    final Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messageLink))
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     mContext.startActivity(fallbackIntent);
   }
