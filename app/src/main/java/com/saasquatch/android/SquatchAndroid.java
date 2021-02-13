@@ -17,6 +17,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.Objects;
 import org.reactivestreams.Publisher;
 
@@ -34,7 +35,7 @@ public final class SquatchAndroid implements Closeable {
   }
 
   @Override
-  public void close() {
+  public void close() throws IOException {
     saasquatchClient.close();
   }
 
