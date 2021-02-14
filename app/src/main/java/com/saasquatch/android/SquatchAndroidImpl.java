@@ -77,17 +77,13 @@ final class SquatchAndroidImpl implements SquatchAndroid {
         .observeOn(AndroidSchedulers.mainThread());
   }
 
-  private void commonWebViewMutation(@Nonnull WebView webView) {
+  private void loadHtmlToWebView(@Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions,
+      @Nonnull String htmlString) {
+    final WebView webView = androidRenderWidgetOptions.getWebView();
     final WebSettings webSettings = webView.getSettings();
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     SquatchJavascriptInterface.applyToWebView(webView);
-  }
-
-  private void loadHtmlToWebView(@Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions,
-      @Nonnull String htmlString) {
-    final WebView webView = androidRenderWidgetOptions.getWebView();
-    commonWebViewMutation(webView);
     final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
     webView.loadData(htmlBase64, "text/html", "base64");
   }
