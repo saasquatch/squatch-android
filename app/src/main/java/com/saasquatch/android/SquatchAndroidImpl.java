@@ -18,6 +18,7 @@ import com.saasquatch.sdk.output.JsonObjectApiResponse;
 import com.saasquatch.sdk.output.TextApiResponse;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.FlowableTransformer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import java.io.IOException;
 import java.text.MessageFormat;
@@ -51,7 +52,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
       @Nullable RequestOptions requestOptions,
       @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions) {
     Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
-    return fromPublisherCommon(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
+    return Flowable.fromPublisher(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
+        .compose(publisherCommon(androidRenderWidgetOptions))
         .doOnNext(apiResponse -> {
           loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
         });
@@ -63,7 +65,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
       @Nullable RequestOptions requestOptions,
       @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions) {
     Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
-    return fromPublisherCommon(saasquatchClient.widgetUpsert(widgetUpsertInput, requestOptions))
+    return Flowable.fromPublisher(saasquatchClient.widgetUpsert(widgetUpsertInput, requestOptions))
+        .compose(publisherCommon(androidRenderWidgetOptions))
         .doOnNext(apiResponse -> {
           final WidgetUpsertResult widgetUpsertResult =
               apiResponse.toModel(WidgetUpsertResult.class);
@@ -71,10 +74,11 @@ final class SquatchAndroidImpl implements SquatchAndroid {
         });
   }
 
-  private <T> Flowable<T> fromPublisherCommon(Publisher<? extends T> publisher) {
-    return Flowable.<T>fromPublisher(publisher)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread());
+  private <T> FlowableTransformer<T, T> publisherCommon(
+      @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions) {
+    return p -> p.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnError(t -> loadErrorHtmlToWebView(androidRenderWidgetOptions, t));
   }
 
   private void loadHtmlToWebView(@Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions,
