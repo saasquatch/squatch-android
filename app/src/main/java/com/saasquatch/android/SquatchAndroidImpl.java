@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.util.Base64;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import com.saasquatch.android.input.AndroidRenderWidgetOptions;
 import com.saasquatch.sdk.RequestOptions;
 import com.saasquatch.sdk.SaaSquatchClient;
 import com.saasquatch.sdk.exceptions.SaaSquatchApiException;
@@ -39,9 +40,6 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     saasquatchClient.close();
   }
 
-  /**
-   * @return The underlying {@link SaaSquatchClient}.
-   */
   @Nonnull
   @Override
   public SaaSquatchClient getSaaSquatchClient() {
@@ -49,44 +47,27 @@ final class SquatchAndroidImpl implements SquatchAndroid {
   }
 
   @Override
-  public void loadHtmlToWebView(@Nonnull WebView webView, @Nonnull String htmlString) {
-    commonWebViewMutation(webView);
-    final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
-    webView.loadData(htmlBase64, "text/html", "base64");
-  }
-
-  private void loadErrorHtmlToWebView(@Nonnull WebView webView, Throwable t) {
-    int count = 0;
-    String rsCode = null;
-    do {
-      if (t instanceof SaaSquatchApiException) {
-        final ApiError apiError = ((SaaSquatchApiException) t).getApiError();
-        rsCode = apiError.getRsCode();
-        break;
-      }
-    } while ((t = t.getCause()) != null && count++ < 100);
-    final String htmlString = new MessageFormat(ERR_HTML_TEMPLATE, Locale.ROOT)
-        .format(new Object[]{rsCode});
-    loadHtmlToWebView(webView, htmlString);
-  }
-
-  @Override
   public Publisher<TextApiResponse> renderWidget(@Nonnull RenderWidgetInput renderWidgetInput,
-      @Nullable RequestOptions requestOptions, @Nonnull WebView webView) {
+      @Nullable RequestOptions requestOptions,
+      @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions) {
+    Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
     return fromPublisherCommon(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
-        .doOnNext(apiResponse -> loadHtmlToWebView(webView, apiResponse.getData()));
+        .doOnNext(apiResponse -> {
+          loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
+        });
   }
 
   @Override
   @SuppressLint("SetJavaScriptEnabled")
   public Publisher<JsonObjectApiResponse> widgetUpsert(@Nonnull WidgetUpsertInput widgetUpsertInput,
-      @Nullable RequestOptions requestOptions, @Nonnull WebView webView) {
-    Objects.requireNonNull(webView);
+      @Nullable RequestOptions requestOptions,
+      @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions) {
+    Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
     return fromPublisherCommon(saasquatchClient.widgetUpsert(widgetUpsertInput, requestOptions))
         .doOnNext(apiResponse -> {
           final WidgetUpsertResult widgetUpsertResult =
               apiResponse.toModel(WidgetUpsertResult.class);
-          loadHtmlToWebView(webView, widgetUpsertResult.getTemplate());
+          loadHtmlToWebView(androidRenderWidgetOptions, widgetUpsertResult.getTemplate());
         });
   }
 
@@ -101,6 +82,30 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     SquatchJavascriptInterface.applyToWebView(webView);
+  }
+
+  private void loadHtmlToWebView(@Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions,
+      @Nonnull String htmlString) {
+    final WebView webView = androidRenderWidgetOptions.getWebView();
+    commonWebViewMutation(webView);
+    final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
+    webView.loadData(htmlBase64, "text/html", "base64");
+  }
+
+  private void loadErrorHtmlToWebView(
+      @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions, Throwable throwable) {
+    int count = 0;
+    String rsCode = null;
+    do {
+      if (throwable instanceof SaaSquatchApiException) {
+        final ApiError apiError = ((SaaSquatchApiException) throwable).getApiError();
+        rsCode = apiError.getRsCode();
+        break;
+      }
+    } while ((throwable = throwable.getCause()) != null && count++ < 100);
+    final String htmlString = new MessageFormat(ERR_HTML_TEMPLATE, Locale.ROOT)
+        .format(new Object[]{rsCode});
+    loadHtmlToWebView(androidRenderWidgetOptions, htmlString);
   }
 
   private static final String ERR_HTML_TEMPLATE = "<!DOCTYPE html>\n"

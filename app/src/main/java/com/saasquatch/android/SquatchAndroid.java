@@ -1,6 +1,7 @@
 package com.saasquatch.android;
 
 import android.webkit.WebView;
+import com.saasquatch.android.input.AndroidRenderWidgetOptions;
 import com.saasquatch.sdk.RequestOptions;
 import com.saasquatch.sdk.SaaSquatchClient;
 import com.saasquatch.sdk.input.RenderWidgetInput;
@@ -38,23 +39,19 @@ public interface SquatchAndroid extends Closeable {
   SaaSquatchClient getSaaSquatchClient();
 
   /**
-   * Load the given HTML string into a {@link WebView} after applying common configuration to the
-   * {@link WebView}.
-   */
-  void loadHtmlToWebView(@Nonnull WebView webView, @Nonnull String htmlString);
-
-  /**
    * Wrapper for {@link SaaSquatchClient#renderWidget(RenderWidgetInput, RequestOptions)} that loads
    * the result widget HTML into a {@link WebView}.
    */
   Publisher<TextApiResponse> renderWidget(@Nonnull RenderWidgetInput renderWidgetInput,
-      @Nullable RequestOptions requestOptions, @Nonnull WebView webView);
+      @Nullable RequestOptions requestOptions,
+      @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions);
 
   /**
    * Wrapper for {@link SaaSquatchClient#widgetUpsert(WidgetUpsertInput, RequestOptions)} that loads
    * the result widget HTML into a {@link WebView}.
    */
   Publisher<JsonObjectApiResponse> widgetUpsert(@Nonnull WidgetUpsertInput widgetUpsertInput,
-      @Nullable RequestOptions requestOptions, @Nonnull WebView webView);
+      @Nullable RequestOptions requestOptions,
+      @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions);
 
 }
