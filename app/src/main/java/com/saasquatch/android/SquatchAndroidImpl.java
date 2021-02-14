@@ -14,6 +14,7 @@ import com.saasquatch.sdk.input.RenderWidgetInput;
 import com.saasquatch.sdk.input.WidgetUpsertInput;
 import com.saasquatch.sdk.models.WidgetUpsertResult;
 import com.saasquatch.sdk.output.JsonObjectApiResponse;
+import com.saasquatch.sdk.output.TextApiResponse;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -45,6 +46,20 @@ final class SquatchAndroidImpl implements SquatchAndroid {
   }
 
   @Override
+  public void loadHtmlToWebView(@Nonnull WebView webView, @Nonnull String htmlString) {
+    commonWebViewMutation(webView);
+    final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
+    webView.loadData(htmlBase64, "text/html", "base64");
+  }
+
+  @Override
+  public Publisher<TextApiResponse> renderWidget(@NonNull RenderWidgetInput renderWidgetInput,
+      @Nullable RequestOptions requestOptions, @NonNull WebView webView) {
+    return fromPublisherCommon(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
+        .doOnNext(apiResponse -> loadHtmlToWebView(webView, apiResponse.getData()));
+  }
+
+  @Override
   @SuppressLint("SetJavaScriptEnabled")
   public Publisher<JsonObjectApiResponse> widgetUpsert(@NonNull WidgetUpsertInput widgetUpsertInput,
       @Nullable RequestOptions requestOptions, @NonNull WebView webView) {
@@ -53,7 +68,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
         .doOnNext(apiResponse -> {
           final WidgetUpsertResult widgetUpsertResult =
               apiResponse.toModel(WidgetUpsertResult.class);
-          loadHtml(webView, widgetUpsertResult.getTemplate());
+          loadHtmlToWebView(webView, widgetUpsertResult.getTemplate());
         });
   }
 
@@ -68,12 +83,6 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     SquatchJavascriptInterface.applyToWebView(webView);
-  }
-
-  private void loadHtml(@Nonnull WebView webView, String htmlString) {
-    commonWebViewMutation(webView);
-    final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
-    webView.loadData(htmlBase64, "text/html", "base64");
   }
 
 }
