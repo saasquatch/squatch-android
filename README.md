@@ -55,6 +55,61 @@ Flowable.fromPublisher(squatchAndroid.widgetUpsert(
 
 In the code above, a widget upsert is performed asynchronously with the given `userJwt`, and the resulting widget is loaded into the given `webView` with the Android main thread.
 
+## More Code Samples
+
+Widget upsert while setting a user's `customFields`
+
+```java
+final Map<String, Object> userInput = new HashMap<>();
+userInput.put("id", "a");
+userInput.put("accountId", "a");
+final Map<String, Object> customFields = new HashMap<>();
+customFields.put("birthday", "--12-25");
+userInput.put("customFields", customFields);
+Flowable.fromPublisher(squatchAndroid.widgetUpsert(
+    WidgetUpsertInput.newBuilder()
+        .setUserInput(userInput)
+        .build(),
+    RequestOptions.newBuilder()
+        .setAuthMethod(AuthMethod.ofJwt(userJwt))
+        .build(),
+    AndroidRenderWidgetOptions.ofWebView(webView)))
+    .subscribe();
+```
+
+Rendering a widget for a user
+
+```java
+Flowable.fromPublisher(squatchAndroid.renderWidget(
+    RenderWidgetInput.newBuilder()
+        .setUserWithUserJwt(userJwt)
+        .build(),
+    null, AndroidRenderWidgetOptions.ofWebView(webView)))
+    .subscribe();
+```
+
+Logging an event for a user (using the underlying `SaaSquatchClient`)
+
+```java
+final Map<String, Object> fields = new HashMap<>();
+fields.put("currency", "CAD");
+Flowable.fromPublisher(getSaaSquatchClient().logUserEvent(
+    UserEventInput.newBuilder()
+        .setAccountId("a")
+        .setUserId("a")
+        .addEvents(UserEventDataInput.newBuilder()
+            .setKey("purchase")
+            .setFields(fields)
+            .build())
+        .build(),
+    RequestOptions.newBuilder()
+        .setAuthMethod(AuthMethod.ofJwt(userJwt))
+        .build()))
+    // This is necessary so the main thread does not start the IO operation
+    .subscribeOn(Schedulers.io())
+    .subscribe();
+```
+
 ## License
 
 Unless explicitly stated otherwise all files in this repository are licensed under the Apache
