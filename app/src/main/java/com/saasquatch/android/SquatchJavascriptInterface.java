@@ -34,7 +34,6 @@ public final class SquatchJavascriptInterface {
     Objects.requireNonNull(shareLink);
     Objects.requireNonNull(messageLink);
     final Intent fbIntent = new Intent(Intent.ACTION_SEND)
-        .setAction(Intent.ACTION_SEND)
         .setType("text/plain")
         .putExtra(Intent.EXTRA_TEXT, shareLink)
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
