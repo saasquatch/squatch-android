@@ -30,6 +30,31 @@ dependencies {
 
 For more information and other built tools, [please refer to the JitPack page](https://jitpack.io/#saasquatch/squatch-android).
 
+## Using the SDK
+
+This library is a wrapper of [SaaSquatch Java SDK](https://github.com/saasquatch/saasquatch-java-sdk) with Android specific features, specifically loading widgets into a WebView. In fact, The `SquatchAndroid` interface has a method called `getSaaSquatchClient()`, which you can use to retrieve the underlying `SaaSquatchClient`. Depending on your use case, [SaaSquatch Java SDK](https://github.com/saasquatch/saasquatch-java-sdk) may be what you need.
+
+The entry point of the SDK is `SquatchAndroid`. To create a `SquatchAndroid` for your tenant with default options, use:
+
+```java
+SquatchAndroid.createForTenant("yourTenantAlias");
+```
+
+It is recommended that you keep a singleton `SquatchAndroid` for all your requests instead of creating a new `SquatchAndroid` for every request. `SquatchAndroid` implements `Closeable`, and it's a good idea to call `close()` to release resources when you are done with it.
+
+`SquatchAndroid` returns [Reactive Streams](https://www.reactive-streams.org/) interfaces. Assuming you are using RxJava, then a typical API call made with this SDK would look something like this:
+
+```java
+Flowable.fromPublisher(squatchAndroid.widgetUpsert(
+    WidgetUpsertInput.newBuilder()
+        .setUserInputWithUserJwt(userJwt)
+        .build(),
+    null, AndroidRenderWidgetOptions.ofWebView(webView)))
+    .subscribe();
+```
+
+In the code above, a widget upsert is performed asynchronously with the given `userJwt`, and the resulting widget is loaded into the given `webView` with the Android main thread.
+
 ## License
 
 Unless explicitly stated otherwise all files in this repository are licensed under the Apache
