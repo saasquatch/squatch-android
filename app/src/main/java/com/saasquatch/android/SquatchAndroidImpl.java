@@ -108,7 +108,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     loadHtmlToWebView(androidRenderWidgetOptions, htmlString);
   }
 
-  private static final String ERR_HTML_TEMPLATE = "<!DOCTYPE html>\n"
+  private static final String ERR_HTML_TEMPLATE = ""
+      + "<!DOCTYPE html>\n"
       + "<html>\n"
       + "  <head>\n"
       + "    <link\n"
