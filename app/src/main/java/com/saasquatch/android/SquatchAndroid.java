@@ -22,12 +22,15 @@ import org.reactivestreams.Publisher;
 public interface SquatchAndroid extends Closeable {
 
   /**
-   * @return A {@link SquatchAndroid} instance that wraps
+   * @return A {@link SquatchAndroid} instance that wraps the given {@link SaaSquatchClient}.
    */
   static SquatchAndroid create(@Nonnull SaaSquatchClient saasquatchClient) {
     return new SquatchAndroidImpl(Objects.requireNonNull(saasquatchClient));
   }
 
+  /**
+   * @return A {@link SquatchAndroid} instance using the given tenant alias with default options.
+   */
   static SquatchAndroid createForTenant(@Nonnull String tenantAlias) {
     return create(SaaSquatchClient.createForTenant(tenantAlias));
   }
