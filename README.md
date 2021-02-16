@@ -94,7 +94,7 @@ Logging an event for a user (using the underlying `SaaSquatchClient`)
 ```java
 final Map<String, Object> fields = new HashMap<>();
 fields.put("currency", "CAD");
-Flowable.fromPublisher(getSaaSquatchClient().logUserEvent(
+Flowable.fromPublisher(squatchAndroid.getSaaSquatchClient().logUserEvent(
     UserEventInput.newBuilder()
         .setAccountId("a")
         .setUserId("a")
