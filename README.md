@@ -83,6 +83,7 @@ Rendering a widget for a user
 Flowable.fromPublisher(squatchAndroid.renderWidget(
     RenderWidgetInput.newBuilder()
         .setUserWithUserJwt(userJwt)
+        .setWidgetType(WidgetType.ofProgramWidget("referral-program", "referrerWidget"))
         .build(),
     null, AndroidRenderWidgetOptions.ofWebView(webView)))
     .subscribe();
