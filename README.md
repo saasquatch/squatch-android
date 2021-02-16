@@ -1,6 +1,34 @@
 # SquatchAndroid
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![](https://jitpack.io/v/saasquatch/squatch-android.svg)](https://jitpack.io/#saasquatch/squatch-android)
+
 Helper library for loading SaaSquatch widgets in Android WebView
+
+## Adding SaaSquatch Java SDK to your project
+
+SaaSquatch Java SDK is hosted on JitPack.
+
+Add JitPack repository:
+
+```gradle
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Add the dependency:
+
+```gradle
+dependencies {
+    implementation 'com.github.saasquatch:squatch-android:Tag'
+}
+```
+
+For more information and other built tools, [please refer to the JitPack page](https://jitpack.io/#saasquatch/squatch-android).
 
 ## License
 
