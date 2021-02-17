@@ -30,6 +30,8 @@ dependencies {
 
 For more information and other built tools, [please refer to the JitPack page](https://jitpack.io/#saasquatch/squatch-android).
 
+This library relies on [SaaSquatch Java SDK](https://github.com/saasquatch/saasquatch-java-sdk), which has transitive dependencies including [RxJava 3](https://github.com/ReactiveX/RxJava), [Gson](https://github.com/google/gson), and [Apache HttpClient 5](https://hc.apache.org/httpcomponents-client-5.0.x/index.html). This library also has [RxAndroid](https://github.com/ReactiveX/RxAndroid) as a transitive dependency. **It is recommended that you explicitly import the transitive dependencies if you intend to use them**, since we may upgrade or switch to other libraries in the future.
+
 ## Using the SDK
 
 This library is a wrapper of [SaaSquatch Java SDK](https://github.com/saasquatch/saasquatch-java-sdk) with Android specific features, specifically loading widgets into a WebView. In fact, The `SquatchAndroid` interface has a method called `getSaaSquatchClient()`, which you can use to retrieve the underlying `SaaSquatchClient`. Depending on your use case, [SaaSquatch Java SDK](https://github.com/saasquatch/saasquatch-java-sdk) may be what you need.
