@@ -60,7 +60,6 @@ final class SquatchAndroidImpl implements SquatchAndroid {
   }
 
   @Override
-  @SuppressLint("SetJavaScriptEnabled")
   public Publisher<JsonObjectApiResponse> widgetUpsert(@Nonnull WidgetUpsertInput widgetUpsertInput,
       @Nullable RequestOptions requestOptions,
       @Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions) {
@@ -81,6 +80,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
         .doOnError(t -> loadErrorHtmlToWebView(androidRenderWidgetOptions, t));
   }
 
+  @SuppressLint("SetJavaScriptEnabled")
   private void loadHtmlToWebView(@Nonnull AndroidRenderWidgetOptions androidRenderWidgetOptions,
       @Nonnull String htmlString) {
     final WebView webView = androidRenderWidgetOptions.getWebView();
