@@ -48,6 +48,7 @@ It is recommended that you keep a singleton `SquatchAndroid` for all your reques
 Flowable.fromPublisher(squatchAndroid.widgetUpsert(
     WidgetUpsertInput.newBuilder()
         .setUserInputWithUserJwt(userJwt)
+        .setWidgetType(WidgetType.ofProgramWidget("referral-program", "referrerWidget"))
         .build(),
     null, AndroidRenderWidgetOptions.ofWebView(webView)))
     .subscribe();
