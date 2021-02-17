@@ -51,6 +51,7 @@ Flowable.fromPublisher(squatchAndroid.widgetUpsert(
         .setWidgetType(WidgetType.ofProgramWidget("referral-program", "referrerWidget"))
         .build(),
     null, AndroidRenderWidgetOptions.ofWebView(webView)))
+    .onErrorComplete() // or provide your own error handling
     .subscribe();
 ```
 
@@ -75,6 +76,7 @@ Flowable.fromPublisher(squatchAndroid.widgetUpsert(
         .setAuthMethod(AuthMethod.ofJwt(userJwt))
         .build(),
     AndroidRenderWidgetOptions.ofWebView(webView)))
+    .onErrorComplete() // or provide your own error handling
     .subscribe();
 ```
 
@@ -87,6 +89,7 @@ Flowable.fromPublisher(squatchAndroid.renderWidget(
         .setWidgetType(WidgetType.ofProgramWidget("referral-program", "referrerWidget"))
         .build(),
     null, AndroidRenderWidgetOptions.ofWebView(webView)))
+    .onErrorComplete() // or provide your own error handling
     .subscribe();
 ```
 
@@ -109,6 +112,7 @@ Flowable.fromPublisher(squatchAndroid.getSaaSquatchClient().logUserEvent(
         .build()))
     // This is necessary so the main thread does not start the IO operation
     .subscribeOn(Schedulers.io())
+    .onErrorComplete() // or provide your own error handling
     .subscribe();
 ```
 
