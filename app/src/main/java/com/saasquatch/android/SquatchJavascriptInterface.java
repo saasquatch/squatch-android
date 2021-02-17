@@ -7,9 +7,9 @@ import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 
 /**
  * Javascript interface with utility methods for SaaSquatch widgets.
@@ -30,7 +30,7 @@ public final class SquatchJavascriptInterface {
    * Share on Facebook with browser fallback
    */
   @JavascriptInterface
-  public void shareOnFacebook(@NonNull String shareLink, @NonNull String messageLink) {
+  public void shareOnFacebook(@Nonnull String shareLink, @Nonnull String messageLink) {
     Objects.requireNonNull(shareLink);
     Objects.requireNonNull(messageLink);
     final Intent fbIntent = new Intent(Intent.ACTION_SEND)
@@ -58,7 +58,7 @@ public final class SquatchJavascriptInterface {
    * Show a toast from the web page
    */
   @JavascriptInterface
-  public void showToast(@NonNull String toast) {
+  public void showToast(@Nonnull String toast) {
     Objects.requireNonNull(toast);
     Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
   }
@@ -68,14 +68,14 @@ public final class SquatchJavascriptInterface {
    *
    * @see SquatchJavascriptInterface#JAVASCRIPT_INTERFACE_NAME
    */
-  public static SquatchJavascriptInterface create(@NonNull Context mContext) {
+  public static SquatchJavascriptInterface create(@Nonnull Context mContext) {
     return new SquatchJavascriptInterface(Objects.requireNonNull(mContext));
   }
 
   /**
    * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
    */
-  public static void applyToWebView(@NonNull WebView webView) {
+  public static void applyToWebView(@Nonnull WebView webView) {
     webView.addJavascriptInterface(create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
   }
 
