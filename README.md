@@ -5,9 +5,9 @@
 
 Helper library for loading SaaSquatch widgets in Android WebView
 
-## Adding SaaSquatch Java SDK to your project
+## Adding SquatchAndroid to your project
 
-SaaSquatch Java SDK is hosted on JitPack.
+SquatchAndroid is hosted on JitPack.
 
 Add JitPack repository:
 
