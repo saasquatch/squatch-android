@@ -59,6 +59,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     return Flowable.fromPublisher(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
         .compose(publisherCommon(androidRenderWidgetOptions))
         .doOnNext(apiResponse -> {
+          //noinspection ConstantConditions
           loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
         })
         .concatMap(apiResponse -> {
@@ -121,7 +122,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     final WebSettings webSettings = webView.getSettings();
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
-    SquatchJavascriptInterface.applyToWebView(webView);
+    SquatchJavascriptInterface.applyToWebView(this, webView);
     final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
     webView.loadData(htmlBase64, "text/html", "base64");
   }
@@ -142,6 +143,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     loadHtmlToWebView(androidRenderWidgetOptions, htmlString);
   }
 
+  @SuppressWarnings("SpellCheckingInspection")
   private static final String ERR_HTML_TEMPLATE = ""
       + "<!DOCTYPE html>\n"
       + "<html>\n"
