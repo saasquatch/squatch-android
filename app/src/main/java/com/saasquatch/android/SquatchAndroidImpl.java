@@ -58,6 +58,9 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
     return Flowable.fromPublisher(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
         .compose(publisherCommon(androidRenderWidgetOptions))
+        .doOnNext(apiResponse -> {
+          loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
+        })
         .concatMap(apiResponse -> {
           final WidgetType widgetType = renderWidgetInput.getWidgetType();
           return Flowable.fromPublisher(recordWidgetLoadAnalytics(renderWidgetInput.getUser(),
@@ -65,9 +68,6 @@ final class SquatchAndroidImpl implements SquatchAndroid {
               .compose(publisherCommon(androidRenderWidgetOptions))
               .ignoreElements()
               .andThen(Flowable.just(apiResponse));
-        })
-        .doOnNext(apiResponse -> {
-          loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
         });
   }
 
@@ -78,6 +78,11 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
     return Flowable.fromPublisher(saasquatchClient.widgetUpsert(widgetUpsertInput, requestOptions))
         .compose(publisherCommon(androidRenderWidgetOptions))
+        .doOnNext(apiResponse -> {
+          final WidgetUpsertResult widgetUpsertResult =
+              apiResponse.toModel(WidgetUpsertResult.class);
+          loadHtmlToWebView(androidRenderWidgetOptions, widgetUpsertResult.getTemplate());
+        })
         .concatMap(apiResponse -> {
           final WidgetType widgetType = widgetUpsertInput.getWidgetType();
           return Flowable.fromPublisher(recordWidgetLoadAnalytics(
@@ -86,11 +91,6 @@ final class SquatchAndroidImpl implements SquatchAndroid {
               .compose(publisherCommon(androidRenderWidgetOptions))
               .ignoreElements()
               .andThen(Flowable.just(apiResponse));
-        })
-        .doOnNext(apiResponse -> {
-          final WidgetUpsertResult widgetUpsertResult =
-              apiResponse.toModel(WidgetUpsertResult.class);
-          loadHtmlToWebView(androidRenderWidgetOptions, widgetUpsertResult.getTemplate());
         });
   }
 
