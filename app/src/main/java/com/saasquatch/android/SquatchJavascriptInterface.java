@@ -148,7 +148,8 @@ public final class SquatchJavascriptInterface {
     }
 
     public SquatchJavascriptInterface build() {
-      return new SquatchJavascriptInterface(squatchAndroid,
+      return new SquatchJavascriptInterface(
+          Objects.requireNonNull(squatchAndroid, "squatchAndroid"),
           Objects.requireNonNull(applicationContext, "context"));
     }
 
