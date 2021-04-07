@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -26,6 +25,7 @@ import javax.annotation.Nullable;
  * Javascript interface with utility methods for SaaSquatch widgets.
  *
  * @see WebView#addJavascriptInterface(Object, String)
+ * @see #newBuilder()
  */
 public final class SquatchJavascriptInterface {
 
@@ -109,36 +109,49 @@ public final class SquatchJavascriptInterface {
    * Default factory method for {@link SquatchJavascriptInterface}.
    *
    * @see SquatchJavascriptInterface#JAVASCRIPT_INTERFACE_NAME
-   * @deprecated use {@link #applyToWebView(SquatchAndroid, WebView)}
+   * @deprecated use {@link #newBuilder()}
    */
   @Deprecated
   public static SquatchJavascriptInterface create(@Nonnull Context mContext) {
     return new SquatchJavascriptInterface(null, Objects.requireNonNull(mContext));
   }
 
-  private static SquatchJavascriptInterface create(@Nonnull SquatchAndroid squatchAndroid,
-      @Nonnull Context mContext) {
-    return new SquatchJavascriptInterface(Objects.requireNonNull(squatchAndroid),
-        Objects.requireNonNull(mContext));
-  }
-
   /**
    * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
    *
-   * @deprecated use {@link #applyToWebView(SquatchAndroid, WebView)}
+   * @deprecated use {@link #newBuilder()}
    */
   @Deprecated
   public static void applyToWebView(@Nonnull WebView webView) {
     webView.addJavascriptInterface(create(webView.getContext()), JAVASCRIPT_INTERFACE_NAME);
   }
 
-  /**
-   * Apply {@link SquatchJavascriptInterface} to a given {@link WebView}.
-   */
-  public static void applyToWebView(@Nonnull SquatchAndroid squatchAndroid,
-      @Nonnull WebView webView) {
-    webView.addJavascriptInterface(create(squatchAndroid, webView.getContext()),
-        JAVASCRIPT_INTERFACE_NAME);
+  public static Builder newBuilder() {
+    return new Builder();
+  }
+
+  public static final class Builder {
+
+    private Context context;
+    private SquatchAndroid squatchAndroid;
+
+    private Builder() {}
+
+    public Builder setContext(@Nonnull Context context) {
+      this.context = Objects.requireNonNull(context);
+      return this;
+    }
+
+    public Builder setSquatchAndroid(@Nonnull SquatchAndroid squatchAndroid) {
+      this.squatchAndroid = Objects.requireNonNull(squatchAndroid);
+      return this;
+    }
+
+    public SquatchJavascriptInterface build() {
+      return new SquatchJavascriptInterface(squatchAndroid,
+          Objects.requireNonNull(context, "context"));
+    }
+
   }
 
 }
