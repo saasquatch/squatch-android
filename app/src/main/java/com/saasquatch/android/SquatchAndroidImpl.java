@@ -123,7 +123,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     final SquatchJavascriptInterface squatchJavascriptInterface = SquatchJavascriptInterface
-        .newBuilder().setSquatchAndroid(this).setContext(webView.getContext()).build();
+        .newBuilder().setSquatchAndroid(this).setApplicationContext(webView.getContext()).build();
     webView.addJavascriptInterface(squatchJavascriptInterface,
         SquatchJavascriptInterface.JAVASCRIPT_INTERFACE_NAME);
     final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);

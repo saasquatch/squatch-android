@@ -31,13 +31,13 @@ public final class SquatchJavascriptInterface {
 
   public static final String JAVASCRIPT_INTERFACE_NAME = "SquatchAndroid";
 
-  private final Context mContext;
   private final SquatchAndroid squatchAndroid;
+  private final Context mContext;
 
   private SquatchJavascriptInterface(@Nullable SquatchAndroid squatchAndroid,
       @Nonnull Context mContext) {
-    this.mContext = mContext;
     this.squatchAndroid = squatchAndroid;
+    this.mContext = mContext;
   }
 
   /**
@@ -132,13 +132,13 @@ public final class SquatchJavascriptInterface {
 
   public static final class Builder {
 
-    private Context context;
+    private Context applicationContext;
     private SquatchAndroid squatchAndroid;
 
     private Builder() {}
 
-    public Builder setContext(@Nonnull Context context) {
-      this.context = Objects.requireNonNull(context);
+    public Builder setApplicationContext(@Nonnull Context applicationContext) {
+      this.applicationContext = Objects.requireNonNull(applicationContext);
       return this;
     }
 
@@ -149,7 +149,7 @@ public final class SquatchJavascriptInterface {
 
     public SquatchJavascriptInterface build() {
       return new SquatchJavascriptInterface(squatchAndroid,
-          Objects.requireNonNull(context, "context"));
+          Objects.requireNonNull(applicationContext, "context"));
     }
 
   }
