@@ -58,9 +58,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
     return Flowable.fromPublisher(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
         .compose(publisherCommon(androidRenderWidgetOptions))
-        .doOnNext(apiResponse -> {
-          loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
-        })
+        .doOnNext(apiResponse -> loadHtmlToWebView(androidRenderWidgetOptions,
+            Objects.requireNonNull(apiResponse.getData())))
         .concatMap(apiResponse -> {
           final WidgetType widgetType = renderWidgetInput.getWidgetType();
           return Flowable.fromPublisher(recordWidgetLoadAnalytics(renderWidgetInput.getUser(),
