@@ -10,11 +10,15 @@ import com.saasquatch.android.input.AndroidRenderWidgetOptions;
 import com.saasquatch.sdk.RequestOptions;
 import com.saasquatch.sdk.SaaSquatchClient;
 import com.saasquatch.sdk.exceptions.SaaSquatchApiException;
+import com.saasquatch.sdk.input.PushWidgetAnalyticsEventInput;
 import com.saasquatch.sdk.input.RenderWidgetInput;
+import com.saasquatch.sdk.input.UserIdInput;
+import com.saasquatch.sdk.input.WidgetType;
 import com.saasquatch.sdk.input.WidgetUpsertInput;
 import com.saasquatch.sdk.models.WidgetUpsertResult;
 import com.saasquatch.sdk.output.ApiError;
 import com.saasquatch.sdk.output.JsonObjectApiResponse;
+import com.saasquatch.sdk.output.StatusOnlyApiResponse;
 import com.saasquatch.sdk.output.TextApiResponse;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
@@ -54,8 +58,15 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     Objects.requireNonNull(androidRenderWidgetOptions, "androidRenderWidgetOptions");
     return Flowable.fromPublisher(saasquatchClient.renderWidget(renderWidgetInput, requestOptions))
         .compose(publisherCommon(androidRenderWidgetOptions))
-        .doOnNext(apiResponse -> {
-          loadHtmlToWebView(androidRenderWidgetOptions, apiResponse.getData());
+        .doOnNext(apiResponse -> loadHtmlToWebView(androidRenderWidgetOptions,
+            Objects.requireNonNull(apiResponse.getData())))
+        .concatMap(apiResponse -> {
+          final WidgetType widgetType = renderWidgetInput.getWidgetType();
+          return Flowable.fromPublisher(recordWidgetLoadAnalytics(renderWidgetInput.getUser(),
+              widgetType == null ? null : widgetType.getProgramId(), requestOptions))
+              .compose(publisherCommon(androidRenderWidgetOptions))
+              .ignoreElements()
+              .andThen(Flowable.just(apiResponse));
         });
   }
 
@@ -70,6 +81,15 @@ final class SquatchAndroidImpl implements SquatchAndroid {
           final WidgetUpsertResult widgetUpsertResult =
               apiResponse.toModel(WidgetUpsertResult.class);
           loadHtmlToWebView(androidRenderWidgetOptions, widgetUpsertResult.getTemplate());
+        })
+        .concatMap(apiResponse -> {
+          final WidgetType widgetType = widgetUpsertInput.getWidgetType();
+          return Flowable.fromPublisher(recordWidgetLoadAnalytics(
+              UserIdInput.of(widgetUpsertInput.getAccountId(), widgetUpsertInput.getUserId()),
+              widgetType == null ? null : widgetType.getProgramId(), requestOptions))
+              .compose(publisherCommon(androidRenderWidgetOptions))
+              .ignoreElements()
+              .andThen(Flowable.just(apiResponse));
         });
   }
 
@@ -78,6 +98,19 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     return p -> p.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnError(t -> loadErrorHtmlToWebView(androidRenderWidgetOptions, t));
+  }
+
+  private Publisher<StatusOnlyApiResponse> recordWidgetLoadAnalytics(UserIdInput user,
+      String programId, @Nullable RequestOptions requestOptions) {
+    final PushWidgetAnalyticsEventInput.Builder analyticsBuilder =
+        PushWidgetAnalyticsEventInput.newBuilder();
+    analyticsBuilder.setUser(user);
+    if (programId != null) {
+      analyticsBuilder.setProgramId(programId);
+    }
+    analyticsBuilder.setEngagementMedium("MOBILE");
+    return saasquatchClient.pushWidgetLoadedAnalyticsEvent(
+        analyticsBuilder.build(), requestOptions);
   }
 
   @SuppressLint("SetJavaScriptEnabled")
