@@ -24,7 +24,7 @@ Add the dependency:
 
 ```gradle
 dependencies {
-    implementation 'com.github.saasquatch:squatch-android:0.0.4'
+    implementation 'com.github.saasquatch:squatch-android:0.0.5'
 }
 ```
 
