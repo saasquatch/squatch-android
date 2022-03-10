@@ -7,6 +7,7 @@
 ### Changed
 
 - saasquatch-java-sdk version bump.
+- Internal dependency version bumps.
 
 ## [0.0.4] - 2021-07-21
 
