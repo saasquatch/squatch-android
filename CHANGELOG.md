@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.0.7] - 2022-09-23
+
+### Changed
+
+- saasquatch-java-sdk version bump.
+- Internal dependency version bumps.
+
 ## [0.0.6] - 2022-06-01
 
 ### Changed
@@ -36,7 +43,9 @@
 
 ## [0.0.1] - 2021-02-17
 
-[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.0.6...HEAD
+[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.0.7...HEAD
+
+[0.0.6]: https://github.com/saasquatch/squatch-android/compare/0.0.6...0.0.7
 
 [0.0.6]: https://github.com/saasquatch/squatch-android/compare/0.0.5...0.0.6
 
