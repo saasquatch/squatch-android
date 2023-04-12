@@ -83,6 +83,10 @@ final class SquatchAndroidImpl implements SquatchAndroid {
           loadHtmlToWebView(androidRenderWidgetOptions, widgetUpsertResult.getTemplate());
         })
         .concatMap(apiResponse -> {
+          if (widgetUpsertInput.getAccountId() == null || widgetUpsertInput.getUserId() == null) {
+            // No analytics if the widget was rendered without a user
+            return Flowable.just(apiResponse);
+          }
           final WidgetType widgetType = widgetUpsertInput.getWidgetType();
           return Flowable.fromPublisher(recordWidgetLoadAnalytics(
               UserIdInput.of(widgetUpsertInput.getAccountId(), widgetUpsertInput.getUserId()),
