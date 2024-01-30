@@ -36,3 +36,16 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
 }
+
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+//                from components.findByName('release')
+                groupId = 'com.github.saasquatch'
+                artifactId = 'squatch-android'
+            }
+        }
+    }
+}
