@@ -3,7 +3,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace "com.saasquatch.android"
+    defaultConfig {
+        compileSdk 33
+    }
 
     defaultConfig {
         minSdkVersion 19
