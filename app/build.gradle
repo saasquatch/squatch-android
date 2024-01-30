@@ -5,12 +5,12 @@ plugins {
 android {
     namespace "com.saasquatch.android"
     defaultConfig {
-        compileSdk 33
+        compileSdk 34
     }
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -20,6 +20,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    compileSdk 34
+    buildToolsVersion '34.0.0'
 }
 
 dependencies {
@@ -28,7 +30,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    api 'com.github.saasquatch:saasquatch-java-sdk:a50ba4b'
+    api 'com.github.saasquatch:saasquatch-java-sdk:c954a9d'
     api 'org.reactivestreams:reactive-streams:1.0.4'
     implementation 'io.reactivex.rxjava3:rxjava:3.1.8'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
