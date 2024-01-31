@@ -6,7 +6,7 @@
 
 ### Changed
 
-- saasquatch-java-sdk version bump.
+- saasquatch-java-sdk version bump. Fixes [#13](https://github.com/saasquatch/squatch-android/issues/13).
 - Internal dependency version bumps.
 
 ## [0.0.8] - 2023-05-16
