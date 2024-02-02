@@ -62,7 +62,7 @@
 
 [Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.0.9...HEAD
 
-[0.0.8]: https://github.com/saasquatch/squatch-android/compare/0.0.8...0.0.9
+[0.0.9]: https://github.com/saasquatch/squatch-android/compare/0.0.8...0.0.9
 
 [0.0.8]: https://github.com/saasquatch/squatch-android/compare/0.0.7...0.0.8
 
