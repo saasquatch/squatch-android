@@ -51,6 +51,7 @@ Flowable.fromPublisher(squatchAndroid.widgetUpsert(
     WidgetUpsertInput.newBuilder()
         .setUserInputWithUserJwt(userJwt)
         .setWidgetType(WidgetType.ofProgramWidget("referral-program", "referrerWidget"))
+        .setEngagementMedium("MOBILE")
         .build(),
     null, AndroidRenderWidgetOptions.ofWebView(webView)))
     .onErrorComplete() // or provide your own error handling
@@ -73,6 +74,7 @@ userInput.put("customFields", customFields);
 Flowable.fromPublisher(squatchAndroid.widgetUpsert(
     WidgetUpsertInput.newBuilder()
         .setUserInput(userInput)
+        .setEngagementMedium("MOBILE")
         .build(),
     RequestOptions.newBuilder()
         .setAuthMethod(AuthMethod.ofJwt(userJwt))
@@ -89,6 +91,7 @@ Flowable.fromPublisher(squatchAndroid.renderWidget(
     RenderWidgetInput.newBuilder()
         .setUserWithUserJwt(userJwt) // Can be omitted to render a widget without user information
         .setWidgetType(WidgetType.ofProgramWidget("referral-program", "referrerWidget"))
+        .setEngagementMedium("MOBILE")
         .build(),
     null, AndroidRenderWidgetOptions.ofWebView(webView)))
     .onErrorComplete() // or provide your own error handling
