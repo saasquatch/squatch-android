@@ -39,6 +39,7 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
+                // https://stackoverflow.com/a/76986134
                 from components.findByName('release')
             }
         }
