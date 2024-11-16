@@ -8,11 +8,11 @@ import com.saasquatch.sdk.input.RenderWidgetInput;
 import com.saasquatch.sdk.input.WidgetUpsertInput;
 import com.saasquatch.sdk.output.JsonObjectApiResponse;
 import com.saasquatch.sdk.output.TextApiResponse;
+import org.reactivestreams.Publisher;
 import java.io.Closeable;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.reactivestreams.Publisher;
 
 /**
  * Wrapper for {@link SaaSquatchClient} that contains Android specific features.

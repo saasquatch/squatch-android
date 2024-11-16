@@ -67,7 +67,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
           }
           final WidgetType widgetType = renderWidgetInput.getWidgetType();
           return Flowable.fromPublisher(recordWidgetLoadAnalytics(renderWidgetInput.getUser(),
-              widgetType == null ? null : widgetType.getProgramId(), requestOptions))
+                  widgetType == null ? null : widgetType.getProgramId(), requestOptions))
               .compose(publisherCommon(androidRenderWidgetOptions))
               .ignoreElements()
               .andThen(Flowable.just(apiResponse));
@@ -89,8 +89,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
         .concatMap(apiResponse -> {
           final WidgetType widgetType = widgetUpsertInput.getWidgetType();
           return Flowable.fromPublisher(recordWidgetLoadAnalytics(
-              UserIdInput.of(widgetUpsertInput.getAccountId(), widgetUpsertInput.getUserId()),
-              widgetType == null ? null : widgetType.getProgramId(), requestOptions))
+                  UserIdInput.of(widgetUpsertInput.getAccountId(), widgetUpsertInput.getUserId()),
+                  widgetType == null ? null : widgetType.getProgramId(), requestOptions))
               .compose(publisherCommon(androidRenderWidgetOptions))
               .ignoreElements()
               .andThen(Flowable.just(apiResponse));
