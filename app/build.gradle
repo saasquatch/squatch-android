@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.saasquatch.squatchandroid'
+    namespace 'com.saasquatch.android'
     compileSdk 34
 
     defaultConfig {
