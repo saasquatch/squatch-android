@@ -35,10 +35,15 @@ dependencies {
 }
 
 afterEvaluate {
-    // See https://jitpack.io/docs/ANDROID/
+    // https://jitpack.io/docs/ANDROID/
     publishing {
         publications {
-            release(MavenPublication) {}
+            release(MavenPublication) {
+                // https://stackoverflow.com/a/76986134
+                from components.findByName('release')
+                groupId = 'com.github.saasquatch'
+                artifactId = 'squatch-android'
+            }
         }
     }
 }
