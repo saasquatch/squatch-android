@@ -50,6 +50,7 @@ afterEvaluate {
                 groupId = 'com.github.saasquatch'
                 artifactId = 'squatch-android'
                 version = '1.0'
+                artifact bundleReleaseAar
             }
         }
     }
