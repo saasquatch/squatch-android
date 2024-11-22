@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.1.0] - 2024-11-22
+
+### Changed
+
+- saasquatch-java-sdk version bump. Fixes Base64 decoding on Android.
+- Internal dependency version bumps.
+
 ## [0.0.9] - 2024-02-02
 
 ### Changed
@@ -60,7 +67,9 @@
 
 ## [0.0.1] - 2021-02-17
 
-[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.0.9...HEAD
+[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.1.0...HEAD
+
+[0.1.0]: https://github.com/saasquatch/squatch-android/compare/0.0.9...0.1.0
 
 [0.0.9]: https://github.com/saasquatch/squatch-android/compare/0.0.8...0.0.9
 
