@@ -50,6 +50,7 @@ afterEvaluate {
                 from components.findByName('release')
                 groupId = 'com.github.saasquatch'
                 artifactId = 'squatch-android'
+                version = '1.0'
             }
         }
     }
