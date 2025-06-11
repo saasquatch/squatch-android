@@ -127,7 +127,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     SquatchJavascriptInterface.applyToWebView(webView);
     final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
     webView.loadDataWithBaseURL("https://fast.ssqt.io/", htmlBase64, "text/html; charset=utf-8",
-        "base64");
+        "base64", null);
   }
 
   private void loadErrorHtmlToWebView(
