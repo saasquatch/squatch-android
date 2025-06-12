@@ -122,8 +122,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     SquatchJavascriptInterface.applyToWebView(webView);
-    webView.loadDataWithBaseURL("https://fast.ssqt.io/", htmlString, "text/html; charset=utf-8",
-        null, null);
+    webView.loadDataWithBaseURL(androidRenderWidgetOptions.getWebViewBaseUrl(), htmlString,
+        "text/html; charset=utf-8", null, null);
   }
 
   private void loadErrorHtmlToWebView(
