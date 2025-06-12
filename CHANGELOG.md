@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-06-12
+
+### Changed
+
+- Added base URL for WebView.
+- Internal dependency version bumps.
+
 ## [0.1.0] - 2024-11-22
 
 ### Changed
@@ -67,7 +74,9 @@
 
 ## [0.0.1] - 2021-02-17
 
-[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.1.1...HEAD
+
+[0.1.1]: https://github.com/saasquatch/squatch-android/compare/0.1.0...0.1.1
 
 [0.1.0]: https://github.com/saasquatch/squatch-android/compare/0.0.9...0.1.0
 

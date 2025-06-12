@@ -27,7 +27,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     api 'com.github.saasquatch:saasquatch-java-sdk:0.2.0'
     api 'org.reactivestreams:reactive-streams:1.0.4'
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.9'
+    implementation 'io.reactivex.rxjava3:rxjava:3.1.10'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }
