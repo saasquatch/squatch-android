@@ -1,9 +1,6 @@
 package com.saasquatch.android;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import android.annotation.SuppressLint;
-import android.util.Base64;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import com.saasquatch.android.input.AndroidRenderWidgetOptions;
@@ -125,9 +122,8 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     SquatchJavascriptInterface.applyToWebView(webView);
-    final String htmlBase64 = Base64.encodeToString(htmlString.getBytes(UTF_8), Base64.DEFAULT);
-    webView.loadDataWithBaseURL("https://fast.ssqt.io/", htmlBase64, "text/html; charset=utf-8",
-        "base64", null);
+    webView.loadDataWithBaseURL("https://fast.ssqt.io/", htmlString, "text/html; charset=utf-8",
+        null, null);
   }
 
   private void loadErrorHtmlToWebView(
