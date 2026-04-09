@@ -28,6 +28,7 @@ public final class SquatchJavascriptInterface {
   public static final String NAVIGATOR_SHARE_POLYFILL = ""
       + "if (!navigator.share && window.SquatchAndroid && SquatchAndroid.shareContent) {"
       + "  navigator.share = function(data) {"
+      + "    data = data || {};"
       + "    return new Promise(function(resolve, reject) {"
       + "      try {"
       + "        SquatchAndroid.shareContent("
