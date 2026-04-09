@@ -125,7 +125,7 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     final String polyfillScript = "<script>"
         + SquatchJavascriptInterface.NAVIGATOR_SHARE_POLYFILL + "</script>";
     final String augmentedHtml = htmlString.contains("<head>")
-        ? htmlString.replace("<head>", "<head>" + polyfillScript)
+        ? htmlString.replaceFirst("<head>", "<head>" + polyfillScript)
         : polyfillScript + htmlString;
     webView.loadDataWithBaseURL(androidRenderWidgetOptions.getWebViewBaseUrl(), augmentedHtml,
         "text/html; charset=utf-8", null, null);
