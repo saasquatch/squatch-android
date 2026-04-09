@@ -20,6 +20,29 @@ public final class SquatchJavascriptInterface {
 
   public static final String JAVASCRIPT_INTERFACE_NAME = "SquatchAndroid";
 
+  /**
+   * JavaScript polyfill for {@code navigator.share}. Android WebView does not support the
+   * Web Share API natively, so this bridges it to {@link #shareContent} via the JS interface.
+   * Inject this into a WebView after page load via {@code evaluateJavascript}.
+   */
+  public static final String NAVIGATOR_SHARE_POLYFILL = ""
+      + "if (!navigator.share && window.SquatchAndroid && SquatchAndroid.shareContent) {"
+      + "  navigator.share = function(data) {"
+      + "    return new Promise(function(resolve, reject) {"
+      + "      try {"
+      + "        SquatchAndroid.shareContent("
+      + "          data.title || '',"
+      + "          data.text || '',"
+      + "          data.url || ''"
+      + "        );"
+      + "        resolve();"
+      + "      } catch(e) {"
+      + "        reject(e);"
+      + "      }"
+      + "    });"
+      + "  };"
+      + "}";
+
   private final Context mContext;
 
   private SquatchJavascriptInterface(Context mContext) {
@@ -52,6 +75,30 @@ public final class SquatchJavascriptInterface {
     final Intent fallbackIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(messageLink))
         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     mContext.startActivity(fallbackIntent);
+  }
+
+  /**
+   * Open the native Android Share Sheet via {@link Intent#createChooser}.
+   * This is called by the navigator.share polyfill injected in
+   * {@link SquatchAndroidImpl#loadHtmlToWebView}.
+   */
+  @JavascriptInterface
+  public void shareContent(@Nonnull String title, @Nonnull String text, @Nonnull String url) {
+    Objects.requireNonNull(title);
+    Objects.requireNonNull(text);
+    Objects.requireNonNull(url);
+    if (title.isEmpty() && text.isEmpty() && url.isEmpty()) {
+      return;
+    }
+    final String body = url.isEmpty() ? text : text.isEmpty() ? url : text + "\n" + url;
+    final Intent sendIntent = new Intent(Intent.ACTION_SEND)
+        .setType("text/plain")
+        .putExtra(Intent.EXTRA_SUBJECT, title)
+        .putExtra(Intent.EXTRA_TEXT, body)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    final Intent chooser = Intent.createChooser(sendIntent, title)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    mContext.startActivity(chooser);
   }
 
   /**
