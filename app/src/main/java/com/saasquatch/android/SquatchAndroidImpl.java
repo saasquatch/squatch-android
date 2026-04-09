@@ -122,8 +122,11 @@ final class SquatchAndroidImpl implements SquatchAndroid {
     webSettings.setJavaScriptEnabled(true);
     webSettings.setDomStorageEnabled(true);
     SquatchJavascriptInterface.applyToWebView(webView);
-    final String augmentedHtml = "<script>"
-        + SquatchJavascriptInterface.NAVIGATOR_SHARE_POLYFILL + "</script>" + htmlString;
+    final String polyfillScript = "<script>"
+        + SquatchJavascriptInterface.NAVIGATOR_SHARE_POLYFILL + "</script>";
+    final String augmentedHtml = htmlString.contains("<head>")
+        ? htmlString.replace("<head>", "<head>" + polyfillScript)
+        : polyfillScript + htmlString;
     webView.loadDataWithBaseURL(androidRenderWidgetOptions.getWebViewBaseUrl(), augmentedHtml,
         "text/html; charset=utf-8", null, null);
   }
