@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-04-10
+
+### Changed
+
+- Added navigator.share polyfill for Share Sheet support on Android
+
 ## [0.1.1] - 2025-06-12
 
 ### Changed
@@ -74,7 +80,9 @@
 
 ## [0.0.1] - 2021-02-17
 
-[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/saasquatch/squatch-android/compare/0.1.2...HEAD
+
+[0.1.2]: https://github.com/saasquatch/squatch-android/compare/0.1.1...0.1.2
 
 [0.1.1]: https://github.com/saasquatch/squatch-android/compare/0.1.0...0.1.1
 
